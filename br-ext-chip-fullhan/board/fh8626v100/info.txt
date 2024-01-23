@@ -1,0 +1,2 @@
+#probe sensor: gc1084_mipi
+#   HD 	1/4.5" 	RAW 	Full @ 30 FPS 	MIPI/DVP 	2.72μm 	FSI 	RGB Bayer 	CSP
