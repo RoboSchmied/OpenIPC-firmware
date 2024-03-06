@@ -5,24 +5,15 @@
 ################################################################################
 
 MAJESTIC_SITE = https://openipc.s3-eu-west-1.amazonaws.com
-MAJESTIC_SOURCE = majestic.$(MAJESTIC_FAMILY).$(MAJESTIC_RELEASE).master.tar.bz2
+MAJESTIC_SOURCE = majestic.$(MAJESTIC_FAMILY).$(MAJESTIC_VARIANT).master.tar.bz2
 MAJESTIC_LICENSE = PROPRIETARY
 MAJESTIC_LICENSE_FILES = LICENSE
 
 MAJESTIC_FAMILY = $(OPENIPC_SOC_FAMILY)
-MAJESTIC_RELEASE = $(OPENIPC_FLAVOR)
+MAJESTIC_VARIANT = $(or $(OPENIPC_MAJESTIC), $(OPENIPC_VARIANT))
 
-MAJESTIC_ULTIMATE = hi3516av100 hi3519v101 t20 t21 t40
-ifneq ($(filter $(MAJESTIC_ULTIMATE),$(MAJESTIC_FAMILY)),)
-	MAJESTIC_RELEASE = lite
-endif
-
-ifeq ($(MAJESTIC_RELEASE),lte)
-	MAJESTIC_RELEASE = fpv
-endif
-
-MAJESTIC_VENDOR = hisilicon goke ingenic sigmastar
-ifneq ($(filter $(MAJESTIC_VENDOR),$(OPENIPC_SOC_VENDOR)),)
+MAJESTIC_FILTER = hi3516ev200 gk7205v200 infinity6b0 t31
+ifneq ($(filter $(MAJESTIC_FILTER),$(MAJESTIC_FAMILY)),)
 	MAJESTIC_DEPENDENCIES += majestic-plugins
 endif
 
