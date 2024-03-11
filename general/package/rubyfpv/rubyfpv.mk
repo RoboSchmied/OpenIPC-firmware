@@ -1,39 +1,30 @@
+################################################################################
+#
+# rubyfpv
+#
+################################################################################
 
-define RUBYFPV_EXTRACT_CMDS
-	cp -avr $(RUBYFPV_PKGDIR)/src/* $(@D)/
-endef
+RUBYFPV_SITE_METHOD = local
+RUBYFPV_SITE = $(RUBYFPV_PKGDIR)/src
 
 define RUBYFPV_BUILD_CMDS
-	(cd $(@D); $(TARGET_CC) -s ruby_start.c -o ruby_start)
-	(cd $(@D); $(TARGET_CC) -s ruby_start.c -o ruby_initradio)
-	(cd $(@D); $(TARGET_CC) -s ruby_start.c -o ruby_logger)
-	(cd $(@D); $(TARGET_CC) -s ruby_start.c -o ruby_timeinit)
-	(cd $(@D); $(TARGET_CC) -s ruby_start.c -o ruby_rt_vehicle)
-	(cd $(@D); $(TARGET_CC) -s ruby_start.c -o ruby_tx_telemetry)
-	(cd $(@D); $(TARGET_CC) -s ruby_start.c -o ruby_rx_rc)
-	(cd $(@D); $(TARGET_CC) -s ruby_start.c -o ruby_rx_commands)
-	(cd $(@D); $(TARGET_CC) -s ruby_start.c -o ruby_vehicle)
+	$(MAKE) CC=$(TARGET_CC) -C $(@D) all
 endef
 
 define RUBYFPV_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 755 -d $(TARGET_DIR)/etc/init.d
-	cp $(RUBYFPV_PKGDIR)/files/S95ruby $(TARGET_DIR)/etc/init.d
+	$(INSTALL) -m 755 -t $(TARGET_DIR)/etc/init.d $(RUBYFPV_PKGDIR)/files/S73ruby
 
-	install -m 0755 -D $(@D)/ruby_start $(TARGET_DIR)/usr/sbin/ruby_start
-	install -m 0755 -D $(@D)/ruby_initradio $(TARGET_DIR)/usr/sbin/ruby_initradio
-	install -m 0755 -D $(@D)/ruby_logger $(TARGET_DIR)/usr/sbin/ruby_logger
-	install -m 0755 -D $(@D)/ruby_timeinit $(TARGET_DIR)/usr/sbin/ruby_timeinit
-	install -m 0755 -D $(@D)/ruby_rt_vehicle $(TARGET_DIR)/usr/sbin/ruby_rt_vehicle
-	install -m 0755 -D $(@D)/ruby_tx_telemetry $(TARGET_DIR)/usr/sbin/ruby_tx_telemetry
-	install -m 0755 -D $(@D)/ruby_rx_rc $(TARGET_DIR)/usr/sbin/ruby_rx_rc
-	install -m 0755 -D $(@D)/ruby_rx_commands $(TARGET_DIR)/usr/sbin/ruby_rx_commands
-	install -m 0755 -D $(@D)/ruby_vehicle $(TARGET_DIR)/usr/sbin/ruby_vehicle
-
-	$(INSTALL) -m 755 -d $(TARGET_DIR)/usr/sbin
-	cp $(RUBYFPV_PKGDIR)/files/stop_vehicle.sh $(TARGET_DIR)/usr/sbin 
+	$(INSTALL) -m 755 -d $(TARGET_DIR)/etc/ruby
+	$(INSTALL) -m 644 -t $(TARGET_DIR)/etc/ruby $(RUBYFPV_PKGDIR)/files/licences/*
 
 	$(INSTALL) -m 755 -d $(TARGET_DIR)/usr/bin
-	cp $(RUBYFPV_PKGDIR)/files/tweaksys $(TARGET_DIR)/usr/bin
+	$(INSTALL) -m 755 -t $(TARGET_DIR)/usr/bin $(RUBYFPV_PKGDIR)/files/tweaksys
+
+	$(INSTALL) -m 755 -d $(TARGET_DIR)/usr/sbin
+	$(INSTALL) -m 755 -t $(TARGET_DIR)/usr/sbin $(@D)/output/*
+	$(INSTALL) -m 755 -t $(TARGET_DIR)/usr/sbin $(RUBYFPV_PKGDIR)/files/ruby_stop
+	$(INSTALL) -m 644 -t $(TARGET_DIR)/usr/sbin $(RUBYFPV_PKGDIR)/files/version_ruby_base.txt
 endef
 
 $(eval $(generic-package))
