@@ -29,6 +29,12 @@ if [ "$1" = "rtl8733bu-generic" ]; then
 	exit 0
 fi
 
+# Generic RTL8812AU
+if [ "$1" = "rtl8812au-generic" ]; then
+	modprobe 88XXau rtw_ht_enable=0 rtw_led_enable=0
+	exit 0
+fi
+
 # Generic ATBM603x
 if [ "$1" = "atbm603x-generic-usb" ]; then
 	modprobe atbm603x_wifi_usb
@@ -102,6 +108,13 @@ fi
 if [ "$1" = "rtl8188fu-hi3518ev300-unknown1" ]; then
 	set_gpio 57 0
 	modprobe mac80211
+	modprobe 8188fu
+	exit 0
+fi
+
+# HI3518EV300 t5810hct-m02
+if [ "$1" = "rtl8188fu-hi3518ev300-t5810hct-m02" ]; then
+	set_gpio 40 1
 	modprobe 8188fu
 	exit 0
 fi
@@ -196,6 +209,13 @@ if [ "$1" = "rtl8188fu-t31-aoni-ep01j05" ]; then
 	exit 0
 fi
 
+# T31 Aosu C5L
+if [ "$1" = "rtl8188fu-t31-aosu-c5l" ]; then
+	set_gpio 43 0
+	modprobe 8188fu
+	exit 0
+fi
+
 # T31 CamHi
 if [ "$1" = "mt7601u-t31-camhi" ]; then
 	set_gpio 61 0
@@ -207,6 +227,13 @@ fi
 if [ "$1" = "rtl8733bu-t31-camhipro" ]; then
 	set_gpio 61 0
 	modprobe 8733bu
+	exit 0
+fi
+
+# T31 IFlytek
+if [ "$1" = "ssv6155-t31-iflytek" ]; then
+	set_gpio 10 1
+	modprobe ssv6155
 	exit 0
 fi
 
